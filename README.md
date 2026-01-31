@@ -3,7 +3,7 @@
 
 # Google Maps Business Data Scraper & Database Updater
 
-An advanced Python-based automation tool designed to scrape business data from Google Maps via a local API and perform a direct, intelligent update to an existing Excel database (`data.xlsx`). The script is built for stability, featuring **Smart Resume**, **Fuzzy Logic Matching**, and a **Dual-Logic** filtering system to ensure no duplicate work or data loss.
+Python-based automation tool designed to scrape business data from Google Maps via a local API and perform a direct, intelligent update to an existing Excel database (`data.xlsx`). The script is built for stability, featuring **Smart Resume**, **Fuzzy Logic Matching**, and a **Dual-Logic** filtering system to ensure no duplicate work or data loss.
 
 ## 🚀 Key Features
 
