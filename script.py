@@ -58,7 +58,11 @@ def run_final_power_updater():
     try:
         # 1. Load Data & Inisialisasi
         df = pd.read_excel(FILE_DATA)
-        target_cols = list(MAPPING_KOLOM.values()) + [KOLOM_SKOR]
+        target_cols = list(MAPPING_KOLOM.values()) + [
+            KOLOM_SKOR,
+            KOLOM_CEK,
+            KOLOM_RESUME_ALT,
+        ]
         for col in target_cols:
             if col not in df.columns:
                 df[col] = None
