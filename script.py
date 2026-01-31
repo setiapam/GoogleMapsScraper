@@ -154,12 +154,8 @@ def run_final_power_updater():
                         "error",
                         "failed",
                     ]:
-                        log(
-                            f"   [!] Gagal/Timeout di Server. Menandai TIDAK DITEMUKAN."
-                        )
-                        df.at[index, KOLOM_RESUME_ALT] = "TIDAK DITEMUKAN"
-                        df.at[index, KOLOM_CEK] = "TIDAK DITEMUKAN"
-                        break
+                        log(f"   [!] Gagal/Timeout di Server.")
+                        sys.exit(0)
                     time.sleep(10)
 
                 # C. Download & Extract
