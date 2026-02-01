@@ -186,11 +186,9 @@ def run_final_power_updater():
                         except Exception as e:
                             log(f"   [!] Error CSV: {e}. Menandai TIDAK DITEMUKAN.")
                             df.at[index, KOLOM_RESUME_ALT] = "TIDAK DITEMUKAN"
-                            df.at[index, KOLOM_CEK] = "TIDAK DITEMUKAN"
                     else:
                         log("   [!] File Rusak/HTML. Menandai TIDAK DITEMUKAN.")
                         df.at[index, KOLOM_RESUME_ALT] = "TIDAK DITEMUKAN"
-                        df.at[index, KOLOM_CEK] = "TIDAK DITEMUKAN"
 
                     requests.delete(f"{BASE_URL}/jobs/{job_id}")
 
@@ -202,7 +200,6 @@ def run_final_power_updater():
                     f"   [!] Error Fatal pada ID {current_id}: {e}. Menandai untuk lewati."
                 )
                 df.at[index, KOLOM_RESUME_ALT] = "TIDAK DITEMUKAN"
-                df.at[index, KOLOM_CEK] = "TIDAK DITEMUKAN"
                 df.to_excel(FILE_DATA, index=False)
 
     except KeyboardInterrupt:
