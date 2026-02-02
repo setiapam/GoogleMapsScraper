@@ -19,14 +19,18 @@ Python-based automation tool designed to scrape business data from Google Maps v
 
 This script requires the [gosom/google-maps-scraper](https://github.com/gosom/google-maps-scraper) running in server mode.
 
-**Run via Docker:**
+You can run the backend in two ways:
 
+* **Via Docker (Recommended):**
 ```bash
 mkdir -p gmapsdata && docker run -v $PWD/gmapsdata:/gmapsdata -p 8080:8080 gosom/google-maps-scraper -data-folder /gmapsdata
 
 ```
 
-*Note: Ensure the API is accessible at `http://localhost:8080` before running the Python script.*
+* **Via Executable Release:**
+If you prefer not to use Docker, you can download the **standalone executable version** available for **Windows, macOS, and Linux** from the [GitHub Releases page](https://github.com/gosom/google-maps-scraper/releases). Simply run the binary with the `server` argument.
+
+> **Note:** Ensure the API is accessible at `http://localhost:8080` before running the Python script. Whether you use Docker or the executable version, the scraper server must be active to receive requests.
 
 ### 2. Python Environment
 
