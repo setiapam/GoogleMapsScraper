@@ -170,17 +170,39 @@ def run_final_power_updater():
                             df_temp = pd.read_csv(
                                 io.StringIO(csv_res.text), on_bad_lines="skip"
                             )
+
                             if not df_temp.empty:
-                                best_match = df_temp.iloc[0]
+                                # Hitung skor untuk setiap baris di hasil download
+                                temp_scores = []
+                                for _, temp_row in df_temp.iterrows():
+                                    # Gabungkan data asli (dari Excel) dengan data hasil download (untuk hitung skor)
+                                    combined_data = {
+                                        "nama_usaha": row_data.get("nama_usaha", ""),
+                                        "alamat_usaha": row_data.get(
+                                            "alamat_usaha", ""
+                                        ),
+                                        "title": temp_row.get("title", ""),
+                                        "address": temp_row.get("address", ""),
+                                    }
+                                    temp_scores.append(hitung_kemiripan(combined_data))
+                                # Tambahkan kolom skor sementara ke df_temp
+                                df_temp["temp_score"] = temp_scores
+
+                                # Ambil baris dengan skor tertinggi
+                                best_match_idx = df_temp["temp_score"].idxmax()
+                                best_match = df_temp.loc[best_match_idx]
+                                best_score = df_temp.at[best_match_idx, "temp_score"]
+
+                                # Update data ke DataFrame utama (df)
                                 for col_csv, col_excel in MAPPING_KOLOM.items():
                                     df.at[index, col_excel] = str(
                                         best_match.get(col_csv, "")
                                     )
 
-                                df.at[index, KOLOM_SKOR] = hitung_kemiripan(
-                                    df.loc[index]
+                                df.at[index, KOLOM_SKOR] = best_score
+                                log(
+                                    f"   [DONE] Found {len(df_temp)} rows. Best Match: {best_score}%"
                                 )
-                                log(f"   [DONE] Match: {df.at[index, KOLOM_SKOR]}%")
                             else:
                                 raise ValueError("CSV Empty Content")
                         except Exception as e:
