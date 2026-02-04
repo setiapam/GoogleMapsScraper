@@ -13,7 +13,7 @@ KOLOM_ID = "perusahaan_id"
 KOLOM_CEK = "hasilgc"
 KOLOM_RESUME_ALT = "input_id"
 KOLOM_SKOR = "perbandingan"
-BASE_URL = "https://gs.murphi.my.id/api/v1"
+BASE_URL = "http://loacalhost:8080/api/v1"
 TIMEOUT_WORKING = 300
 
 # Mapping kolom hasil: {Nama_di_CSV_Google : Nama_Kolom_di_Excel}
