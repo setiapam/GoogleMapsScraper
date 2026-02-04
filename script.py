@@ -13,7 +13,7 @@ KOLOM_ID = "perusahaan_id"
 KOLOM_CEK = "hasilgc"
 KOLOM_RESUME_ALT = "input_id"
 KOLOM_SKOR = "perbandingan"
-BASE_URL = "http://localhost:8080/api/v1"
+BASE_URL = "https://gs.murphi.my.id/api/v1"
 TIMEOUT_WORKING = 300
 
 # Mapping kolom hasil: {Nama_di_CSV_Google : Nama_Kolom_di_Excel}
@@ -208,6 +208,7 @@ def run_final_power_updater():
                         except Exception as e:
                             log(f"   [!] Error CSV: {e}. Menandai TIDAK DITEMUKAN.")
                             df.at[index, KOLOM_RESUME_ALT] = "TIDAK DITEMUKAN"
+                            requests.delete(f"{BASE_URL}/jobs/{job_id}")
                     else:
                         log("   [!] File Rusak/HTML. Menandai TIDAK DITEMUKAN.")
                         df.at[index, KOLOM_RESUME_ALT] = "TIDAK DITEMUKAN"
@@ -223,6 +224,7 @@ def run_final_power_updater():
                 )
                 df.at[index, KOLOM_RESUME_ALT] = "TIDAK DITEMUKAN"
                 df.to_excel(FILE_DATA, index=False)
+                requests.delete(f"{BASE_URL}/jobs/{job_id}")
 
     except KeyboardInterrupt:
         log("\n[STOP] Dihentikan paksa (Ctrl+C). Progres aman di data.xlsx.")
