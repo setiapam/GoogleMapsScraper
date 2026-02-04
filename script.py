@@ -224,7 +224,6 @@ def run_final_power_updater():
                 )
                 df.at[index, KOLOM_RESUME_ALT] = "TIDAK DITEMUKAN"
                 df.to_excel(FILE_DATA, index=False)
-                requests.delete(f"{BASE_URL}/jobs/{job_id}")
 
     except KeyboardInterrupt:
         log("\n[STOP] Dihentikan paksa (Ctrl+C). Progres aman di data.xlsx.")
