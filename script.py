@@ -5,6 +5,7 @@ import io
 import datetime
 import os
 import sys
+import argparse
 from fuzzywuzzy import fuzz
 
 # --- KONFIGURASI ---
@@ -48,7 +49,7 @@ def hitung_kemiripan(row):
         return 0
 
 
-def run_final_power_updater():
+def run_final_power_updater(priority_col=None, priority_value=None):
     log("=== MEMULAI POWER UPDATER (ULTIMATE STABILITY VERSION) ===")
 
     if not os.path.exists(FILE_DATA):
@@ -99,6 +100,15 @@ def run_final_power_updater():
             df[KOLOM_RESUME_ALT].isna() | (df[KOLOM_RESUME_ALT] == "")
         )
         df_todo = df[mask_todo].copy()
+
+        if priority_col and priority_col in df_todo.columns:
+            log(f"Mengaktifkan prioritas: {priority_col} == {priority_value}")
+            # Buat kolom temporary untuk sorting: 0 untuk prioritas tinggi, 1 untuk lainnya
+            df_todo['is_priority'] = (
+                df_todo[priority_col].astype(str).str.strip().str.lower() != str(priority_value).strip().lower()
+            ).astype(int)
+    
+            df_todo = df_todo.sort_values(by='is_priority').drop(columns=['is_priority'])
 
         log(f"Sisa baris yang perlu di-scrape: {len(df_todo)}")
 
@@ -233,4 +243,11 @@ def run_final_power_updater():
 
 
 if __name__ == "__main__":
-    run_final_power_updater()
+    parser = argparse.ArgumentParser(description="Script Scraping dengan Prioritas")
+
+    parser.add_argument("--kolom", type=str, help="Nama kolom yang ingin diprioritaskan (contoh: jenisusaha)")
+    parser.add_argument("--nilai", type=str, help="Nilai spesifik yang didahulukan (contoh: ub)")
+
+    args = parser.parse_args()
+
+    run_final_power_updater(priority_col=args.kolom, priority_value=args.nilai)

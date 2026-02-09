@@ -28,7 +28,7 @@ You can download the **standalone executable version** available for **Windows, 
 Install the required libraries:
 
 ```bash
-pip install pandas requests openpyxl fuzzywuzzy python-Levenshtein
+pip install pandas requests openpyxl fuzzywuzzy python-Levenshtein argparse
 
 ```
 
@@ -45,15 +45,24 @@ The script expects a file named `data.xlsx` in the same directory with the follo
 
 1. **Prepare your data**: Place your `data.xlsx` file in the script folder.
 2. **Start the Scraper Server**: Ensure your Docker container (gosom/google-maps-scraper) is running and the WebUI/API is accessible at port 8080.
-3. **Run the script**:
+3. **Run the script**: You can execute the script in ***Normal Mode*** or ***Prioriy Mode***
+
+A. Normal Mode
+By default, the script processes rows in the order they appear in the Excel file (from top to bottom).
+
 ```bash
 python your_script_name.py
-
 ```
 
+B. Priority Mode (Optional)
+You can prioritize specific rows based on a column value without manually re-sorting your Excel file. This is useful if you need data for a specific business scale or region first.
 
-4. **Monitor Logs**: The terminal will show the progress, job IDs, and similarity scores for each business found.
-5. **Stopping/Resuming**: You can stop the script at any time using `Ctrl+C`. When restarted, it will automatically resume from the last unfinished row.
+```bash
+python script.py --kolom <COLUMN_NAME> --nilai <TARGET_VALUE>
+```
+
+1. **Monitor Logs**: The terminal will show the progress, job IDs, and similarity scores for each business found.
+2. **Stopping/Resuming**: You can stop the script at any time using `Ctrl+C`. When restarted, it will automatically resume from the last unfinished row.
 
 ## ⚙️ Configuration
 
