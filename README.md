@@ -47,19 +47,25 @@ The script expects a file named `data.xlsx` in the same directory with the follo
 2. **Start the Scraper Server**: Ensure your Docker container (gosom/google-maps-scraper) is running and the WebUI/API is accessible at port 8080.
 3. **Run the script**: You can execute the script in **Normal Mode** or **Prioriy Mode**
 
-+ **A. Normal Mode**  
+* **A. Normal Mode**  
 By default, the script processes rows in the order they appear in the Excel file (from top to bottom).
 
 ```bash
 python your_script_name.py
 ```
 
-+ **B. Priority Mode (Optional)**  
+* **B. Priority Mode (Optional)**  
 You can prioritize specific rows based on a column value without manually re-sorting your Excel file. This is useful if you need data for a specific business scale or region first.
 
 ```bash
 python script.py --kolom <COLUMN_NAME> --nilai <TARGET_VALUE>
 ```
+
+```bash
+python script.py --kolom <COLUMN_NAME> --nilai <TARGET_VALUE> --mode exclude
+```
+
+> **Note:** Default mode is include
 
 1. **Monitor Logs**: The terminal will show the progress, job IDs, and similarity scores for each business found.
 2. **Stopping/Resuming**: You can stop the script at any time using `Ctrl+C`. When restarted, it will automatically resume from the last unfinished row.

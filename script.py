@@ -49,7 +49,7 @@ def hitung_kemiripan(row):
         return 0
 
 
-def run_final_power_updater(priority_col=None, priority_value=None):
+def run_final_power_updater(priority_col=None, priority_value=None, mode='include'):
     log("=== MEMULAI POWER UPDATER (ULTIMATE STABILITY VERSION) ===")
 
     if not os.path.exists(FILE_DATA):
@@ -102,12 +102,18 @@ def run_final_power_updater(priority_col=None, priority_value=None):
         df_todo = df[mask_todo].copy()
 
         if priority_col and priority_col in df_todo.columns:
-            log(f"Mengaktifkan prioritas: {priority_col} == {priority_value}")
-            # Buat kolom temporary untuk sorting: 0 untuk prioritas tinggi, 1 untuk lainnya
-            df_todo['is_priority'] = (
-                df_todo[priority_col].astype(str).str.strip().str.lower() != str(priority_value).strip().lower()
-            ).astype(int)
-    
+            log(f"Mengaktifkan prioritas: {priority_col} == {priority_value} (Mode: {mode})")
+            
+            col_values = df_todo[priority_col].astype(str).str.strip().str.lower()
+            target = str(priority_value).strip().lower()
+            
+            is_match = (col_values == target)
+            
+            if mode == 'include':
+                df_todo['is_priority'] = (~is_match).astype(int)
+            else:
+                df_todo['is_priority'] = (is_match).astype(int)
+            
             df_todo = df_todo.sort_values(by='is_priority').drop(columns=['is_priority'])
 
         log(f"Sisa baris yang perlu di-scrape: {len(df_todo)}")
@@ -247,7 +253,8 @@ if __name__ == "__main__":
 
     parser.add_argument("--kolom", type=str, help="Nama kolom yang ingin diprioritaskan (contoh: jenisusaha)")
     parser.add_argument("--nilai", type=str, help="Nilai spesifik yang didahulukan (contoh: ub)")
+    parser.add_argument("--mode", type=str, choices=['include', 'exclude'], default='include', 
+                        help="include: dahulukan nilai ini, exclude: dahulukan selain nilai ini")
 
     args = parser.parse_args()
-
-    run_final_power_updater(priority_col=args.kolom, priority_value=args.nilai)
+    run_final_power_updater(priority_col=args.kolom, priority_value=args.nilai, mode=args.mode)
